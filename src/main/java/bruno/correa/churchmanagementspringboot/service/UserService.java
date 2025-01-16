@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,17 @@ public class UserService {
                 .name(createdUser.getName())
                 .age(createdUser.getAge())
                 .role(createdUser.getRole().name())
+                .build();
+    }
+
+    public UserResponseDTO findById(Integer id) {
+        User user = repository.findById(id).orElseThrow(NoSuchElementException::new);
+
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .age(user.getAge())
+                .name(user.getName())
+                .role(user.getRole().getName())
                 .build();
     }
 }

@@ -6,13 +6,11 @@ import bruno.correa.churchmanagementspringboot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,5 +37,16 @@ public class UserController {
         URI location = URI.create(FIND_USER_BY_ID.replace("{id}", String.valueOf(response.getId())));
 
         return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping(value = FIND_USER_BY_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Integer id) {
+
+        try {
+            UserResponseDTO response = service.findById(id);
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException noSuchElementException) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
