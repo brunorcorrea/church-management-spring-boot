@@ -8,8 +8,11 @@ public enum Role {
     MEMBER("Member", 1),
     PASTOR("Pastor", 2);
 
-    private String name;
-    private Integer order;
+    private final String name;
+    private final Integer order;
 
-    Role(String name, Integer order) {}
+    Role(String name, Integer order) {
+        this.name = name;
+        this.order = order;
+    }
 }
